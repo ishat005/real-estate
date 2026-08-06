@@ -1,0 +1,43 @@
+import { NavLink } from "react-router-dom";
+import logo from "../../assets/images/logo.webp";
+
+const Navbar = () => {
+  return (
+    <nav className="bg-[#dfeaf5] shadow-sm">
+      <div className="mx-auto grid max-w-8xl grid-cols-1 items-center gap-3 px-4 py-3 sm:px-6 md:grid-cols-[1fr_auto_1fr] md:items-center md:py-4">
+        <div className="flex items-center justify-start gap-3">
+          <NavLink to="/" className="flex items-center gap-2">
+            <img src={logo} alt="Real Estate Logo" className="h-8 w-8 object-contain sm:h-10 sm:w-10" />
+            <span className="text-base font-bold tracking-tight text-slate-900 sm:text-lg">La Maison</span>
+          </NavLink>
+        </div>
+
+        <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-7">
+          <NavLink to="/" className="text-[11px] font-medium text-slate-700 hover:text-slate-950 sm:text-sm">
+            Home
+          </NavLink>
+          <NavLink to="/about" className="text-[11px] font-medium text-slate-700 hover:text-slate-950 sm:text-sm">
+            About Us
+          </NavLink>
+          <NavLink to="/properties" className="text-[11px] font-medium text-slate-700 hover:text-slate-950 sm:text-sm">
+            Properties
+          </NavLink>
+          <NavLink to="/contact" className="text-[11px] font-medium text-slate-700 hover:text-slate-950 sm:text-sm">
+            Contact Us
+          </NavLink>
+        </div>
+
+        <div className="flex items-center justify-end">
+          <NavLink
+            to="/login"
+            className="rounded-md bg-slate-950 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-800 sm:px-4 sm:py-2 sm:text-sm"
+          >
+            Join Now
+          </NavLink>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
