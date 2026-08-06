@@ -1,4 +1,10 @@
 import { Link } from "react-router-dom";
+import {
+  FaLocationDot,
+  FaHouse,
+  FaDollarSign,
+  FaMagnifyingGlass,
+} from "react-icons/fa6";
 
 const Home = () => {
   const stats = [
@@ -77,24 +83,57 @@ const Home = () => {
         </div>
 
         <div className="mt-8 rounded-2xl bg-white p-4 shadow-sm sm:p-5">
-          <div className="mb-3 text-lg font-semibold text-slate-900">Search for available properties</div>
+          <div className="mb-3 text-lg font-semibold text-slate-900">
+            Search for available properties
+          </div>
+
           <div className="grid gap-3 md:grid-cols-4">
-            <input
-              type="text"
-              placeholder="Location"
-              className="rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400"
-            />
-            <input
-              type="text"
-              placeholder="Property Type"
-              className="rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400"
-            />
-            <input
-              type="text"
-              placeholder="Budget"
-              className="rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400"
-            />
-            <button className="rounded-lg bg-slate-950 px-4 py-3 text-sm font-semibold text-white">Search Now</button>
+            {/* Location */}
+            <div className="relative">
+              <FaLocationDot className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+
+              <input
+                type="text"
+                placeholder="Location"
+                className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-11 pr-4 text-sm text-slate-700 shadow-sm outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
+              />
+            </div>
+
+            {/* Property Type */}
+            <div className="relative">
+              <FaHouse className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+
+              <select
+                className="h-12 w-full appearance-none rounded-xl border border-slate-200 bg-white pl-11 pr-4 text-sm text-slate-700 shadow-sm outline-none transition-all duration-300 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
+              >
+                <option>Property Type</option>
+                <option>Apartment</option>
+                <option>Villa</option>
+                <option>House</option>
+                <option>Condo</option>
+              </select>
+            </div>
+
+            {/* Budget */}
+            <div className="relative">
+              <FaDollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+
+              <select
+                className="h-12 w-full appearance-none rounded-xl border border-slate-200 bg-white pl-11 pr-4 text-sm text-slate-700 shadow-sm outline-none transition-all duration-300 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
+              >
+                <option>Budget</option>
+                <option>Under CAD 100K</option>
+                <option>CAD 100K - 500K</option>
+                <option>CAD 500K - 1M</option>
+                <option>Above CAD 1M</option>
+              </select>
+            </div>
+
+            {/* Search Button */}
+            <button className="flex h-12 items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-slate-800 hover:shadow-lg">
+              <FaMagnifyingGlass />
+              Search Now
+            </button>
           </div>
         </div>
       </section>
