@@ -1,69 +1,144 @@
 import backgroundImage from "../assets/images/backgroundImage.jfif";
-import { Link } from "react-router-dom";
-import {
-  FaGoogle,
-  FaUser,
-  FaEnvelope,
-  FaLock,
-} from "react-icons/fa";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setError("");
+
+    // Basic validation
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    if (!agreeToTerms) {
+      setError("Please agree to the Terms & Conditions and Privacy Policy.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        "http://localhost:5000/api/auth/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unable to create account.");
+      }
+
+      // Store JWT
+      localStorage.setItem("token", data.token);
+
+      // Store user information
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      // Redirect to homepage
+      navigate("/");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Background */}
+      {/* Background Image */}
       <img
         src={backgroundImage}
         alt="Luxury Villa"
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/45"></div>
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/50"></div>
 
-      {/* Card */}
-      <div className="relative flex min-h-screen items-center justify-center px-4 py-10">
-        <div className="w-full max-w-[420px] rounded-3xl border border-white/20 bg-white/70 p-7 shadow-2xl backdrop-blur-xl">
-
-          {/* Heading */}
-          <h1 className="text-center text-4xl font-bold text-slate-900">
+      {/* Signup Card */}
+      <div className="relative flex min-h-screen items-center justify-center px-6 py-8">
+        <div className="w-full max-w-md rounded-3xl border border-white/20 bg-white/65 p-5 shadow-2xl backdrop-blur-lg">
+          
+          {/* Logo */}
+          <h1 className="mb-2 text-center text-3xl font-bold text-slate-900">
             La Maison
           </h1>
 
-          <p className="mt-2 mb-6 text-center text-gray-600">
-            Join La Maison today.
+          <p className="mb-4 text-center text-gray-600">
+            Create your account to get started.
           </p>
 
-          {/* Google */}
-          <button className="flex h-11 w-full items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white font-medium transition-all duration-300 hover:bg-gray-100 hover:shadow-md">
-            <FaGoogle className="text-red-500" />
-            Continue with Google
-          </button>
-
-          {/* Divider */}
-          <div className="my-6 flex items-center">
-            <div className="h-px flex-1 bg-gray-300"></div>
-            <span className="mx-4 text-sm text-gray-500">OR</span>
-            <div className="h-px flex-1 bg-gray-300"></div>
-          </div>
+          {/* Error */}
+          {error && (
+            <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+              {error}
+            </div>
+          )}
 
           {/* Form */}
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
 
             {/* Full Name */}
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">
+              <label className="mb-2 block text-sm font-medium text-slate-700">
                 Full Name
               </label>
 
-              <div className="relative">
-                <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-
-                <input
-                  type="text"
-                  placeholder="Enter your full name"
-                  className="h-11 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-4 shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
-                />
-              </div>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+                className="h-11 w-full rounded-xl border border-gray-300 bg-white px-4 outline-none transition focus:border-slate-900"
+              />
             </div>
 
             {/* Email */}
@@ -72,15 +147,14 @@ const Signup = () => {
                 Email
               </label>
 
-              <div className="relative">
-                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="h-11 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-4 shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
-                />
-              </div>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                className="h-11 w-full rounded-xl border border-gray-300 bg-white px-4 outline-none transition focus:border-slate-900"
+              />
             </div>
 
             {/* Password */}
@@ -89,15 +163,14 @@ const Signup = () => {
                 Password
               </label>
 
-              <div className="relative">
-                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-
-                <input
-                  type="password"
-                  placeholder="Create a password"
-                  className="h-11 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-4 shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
-                />
-              </div>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create a password"
+                className="h-11 w-full rounded-xl border border-gray-300 bg-white px-4 outline-none transition focus:border-slate-900"
+              />
             </div>
 
             {/* Confirm Password */}
@@ -106,52 +179,71 @@ const Signup = () => {
                 Confirm Password
               </label>
 
-              <div className="relative">
-                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-
-                <input
-                  type="password"
-                  placeholder="Confirm your password"
-                  className="h-11 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-4 shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
-                />
-              </div>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm your password"
+                className="h-11 w-full rounded-xl border border-gray-300 bg-white px-4 outline-none transition focus:border-slate-900"
+              />
             </div>
 
             {/* Terms */}
-            <label className="flex items-center gap-2 text-sm text-gray-700">
+            <div className="flex items-start gap-2 text-sm">
               <input
                 type="checkbox"
-                className="h-4 w-4 rounded accent-slate-900"
+                checked={agreeToTerms}
+                onChange={(e) => setAgreeToTerms(e.target.checked)}
+                className="mt-1"
               />
 
-              <span>
+              <span className="text-gray-700">
                 I agree to the{" "}
                 <button
                   type="button"
                   className="font-semibold text-slate-900 hover:underline"
                 >
-                  Terms
+                  Terms & Conditions
                 </button>{" "}
-                &
+                and{" "}
                 <button
                   type="button"
-                  className="ml-1 font-semibold text-slate-900 hover:underline"
+                  className="font-semibold text-slate-900 hover:underline"
                 >
                   Privacy Policy
                 </button>
               </span>
-            </label>
+            </div>
 
-            {/* Submit */}
+            {/* Signup Button */}
             <button
               type="submit"
-              className="h-11 w-full rounded-xl bg-slate-900 font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-slate-800"
+              disabled={loading}
+              className="h-11 w-full rounded-xl bg-slate-900 px-4 font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Create Account
+              {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
 
-          {/* Footer */}
+          {/* Divider */}
+          <div className="my-6 flex items-center">
+            <div className="h-px flex-1 bg-gray-300"></div>
+
+            <span className="mx-4 text-sm text-gray-500">OR</span>
+
+            <div className="h-px flex-1 bg-gray-300"></div>
+          </div>
+
+          {/* Google Button */}
+          <button
+            type="button"
+            className="h-11 w-full rounded-xl border border-gray-300 bg-white px-4 font-medium transition hover:bg-gray-100"
+          >
+            Continue with Google
+          </button>
+
+          {/* Login Link */}
           <p className="mt-6 text-center text-sm text-gray-600">
             Already have an account?{" "}
             <Link
@@ -161,7 +253,6 @@ const Signup = () => {
               Login
             </Link>
           </p>
-
         </div>
       </div>
     </div>
