@@ -6,6 +6,8 @@ import {
   FaRulerCombined,
 } from "react-icons/fa";
 
+import { Link } from "react-router-dom";
+
 const PropertyCard = ({ property }) => {
   return (
     <article className="min-w-0 overflow-hidden rounded-2xl bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
@@ -90,16 +92,16 @@ const PropertyCard = ({ property }) => {
             </p>
 
             <p className="mt-1 break-words text-xl font-bold text-slate-950">
-              {property.price}
+              CAD {property.price.toLocaleString()}
             </p>
           </div>
 
-          <button
-            type="button"
+          <Link
+            to={`/properties/${property.id}`}
             className="shrink-0 rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
           >
             View Details
-          </button>
+          </Link>
         </div>
       </div>
     </article>

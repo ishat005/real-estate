@@ -7,6 +7,9 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
+import Profile from "./pages/Profile";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import PropertyDetails from "./pages/PropertyDetails";
 
 function App() {
   return (
@@ -20,7 +23,14 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-        </Routes>
+
+          <Route path="/properties/:id" element={<PropertyDetails />} />
+        
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+        </Routes> 
       </main>
       <Footer />
     </div>

@@ -25,6 +25,9 @@ app.get("/", (req, res) => {
 // Auth routes
 app.use("/api/auth", require("./routes/authRoutes"));
 
+// Property routes
+app.use("/api/properties", require("./routes/propertyRoutes"));
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
