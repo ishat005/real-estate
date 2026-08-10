@@ -44,9 +44,6 @@ const Properties = () => {
 
         const data = await response.json();
 
-        console.log("Properties:", data.properties);
-
-
         if (!response.ok) {
           throw new Error(
             data.message || "Failed to fetch properties."

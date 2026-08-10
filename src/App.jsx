@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import Home from "./pages/Home";
@@ -11,12 +12,23 @@ import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PropertyDetails from "./pages/PropertyDetails";
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+};
+
 function App() {
   return (
     <div className="app-container">
       <Navbar />
       <main>
-        <Routes>
+          <ScrollToTop />
+          <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/properties" element={<Properties />} />
           <Route path="/about" element={<About />} />
@@ -30,7 +42,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />} />
           </Route>
-        </Routes> 
+          </Routes> 
       </main>
       <Footer />
     </div>

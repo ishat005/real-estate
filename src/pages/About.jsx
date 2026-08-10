@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FaHouse,
@@ -10,40 +11,49 @@ import {
   FaStar
 } from "react-icons/fa6";
 
-const testimonials = [
-  {
-    id: 1,
-    name: "",
-    role: "",
-    image: "",
-    review: "",
-    rating: 5,
-  },
-  {
-    id: 2,
-    name: "",
-    role: "",
-    image: "",
-    review: "",
-    rating: 5,
-  },
-  {
-    id: 3,
-    name: "",
-    role: "",
-    image: "",
-    review: "",
-    rating: 5,
-  },
-];
+
 
 const About = () => {
+  const [testimonials, setTestimonials] = useState([]);
+  const [loadingTestimonials, setLoadingTestimonials] = useState(true);
+  const [testimonialError, setTestimonialError] = useState("");
+
   const stats = [
     { value: "1200+", label: "Listed Properties" },
     { value: "4500+", label: "Happy Customers" },
     { value: "100+", label: "Awards Won" },
     { value: "15+", label: "Years of Experience" },
   ];
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        setLoadingTestimonials(true);
+        setTestimonialError("");
+
+        const response = await fetch(
+          "http://localhost:5000/api/testimonials"
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message || "Failed to fetch testimonials."
+          );
+        }
+
+        setTestimonials(data.testimonials);
+      } catch (error) {
+        console.error("Fetch testimonials error:", error);
+        setTestimonialError(error.message);
+      } finally {
+        setLoadingTestimonials(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
 
   return (
     <div className="bg-slate-100 text-slate-900">
@@ -95,7 +105,7 @@ const About = () => {
 
           <div>
             <img
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0?auto=format&fit=crop&w=1000&q=80"
+              src="https://images.unsplash.com/photo-1505843513577-22bb7d21e455?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?auto=format&fit=crop&w=1000&q=80"
               alt="Luxury Home"
               className="rounded-3xl shadow-xl"
             />
@@ -196,59 +206,111 @@ const About = () => {
         </div>
       </section>
 
-     {/* Testimonials */}
+    {/* Testimonials */}
     <section className="bg-slate-50 py-20">
-    <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-6">
 
+        {/* Section Header */}
         <div className="mb-12 text-center">
-        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">
             Testimonials
-        </p>
+          </p>
 
-        <h2 className="text-4xl font-bold text-slate-950">
+          <h2 className="text-3xl font-bold text-slate-950 sm:text-4xl">
             What Our Clients Say
-        </h2>
+          </h2>
 
-        <p className="mx-auto mt-4 max-w-2xl text-slate-600">
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
             Hear from homeowners and investors who trusted La Maison to
             find their perfect property.
-        </p>
+          </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {/* Loading */}
+        {loadingTestimonials ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((item) => (
+              <div
+                key={item}
+                className="rounded-3xl bg-white p-6 shadow-sm sm:p-7"
+              >
+                {/* Stars */}
+                <div className="mb-6 h-5 w-28 animate-pulse rounded bg-slate-200" />
 
-        {testimonials.map((testimonial) => (
-            <div
-            key={testimonial.id}
-            className="rounded-3xl bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-            >
-            {/* Stars */}
-            <div className="mb-5 flex gap-1 text-yellow-400">
-                {[...Array(5)].map((_, index) => (
-                <FaStar key={index} />
-                ))}
-            </div>
-
-            {/* Review */}
-            <div className="mb-8 h-28 animate-pulse rounded-xl bg-slate-200"></div>
-
-            {/* User */}
-            <div className="flex items-center gap-4">
-                <div className="h-14 w-14 animate-pulse rounded-full bg-slate-200"></div>
-
-                <div className="flex-1">
-                <div className="mb-2 h-4 w-32 animate-pulse rounded bg-slate-200"></div>
-
-                <div className="h-3 w-24 animate-pulse rounded bg-slate-100"></div>
+                {/* Review */}
+                <div className="space-y-3">
+                  <div className="h-4 w-full animate-pulse rounded bg-slate-200" />
+                  <div className="h-4 w-full animate-pulse rounded bg-slate-200" />
+                  <div className="h-4 w-4/5 animate-pulse rounded bg-slate-200" />
                 </div>
-            </div>
-            </div>
-        ))}
 
-        </div>
-    </div>
+                {/* User */}
+                <div className="mt-8 flex items-center gap-4 border-t border-slate-100 pt-6">
+                  <div className="h-12 w-12 shrink-0 animate-pulse rounded-full bg-slate-200" />
+
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-2 h-4 w-32 animate-pulse rounded bg-slate-200" />
+                    <div className="h-3 w-24 animate-pulse rounded bg-slate-100" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : testimonialError ? (
+          /* Error */
+          <div className="mx-auto max-w-xl rounded-2xl border border-red-200 bg-red-50 p-6 text-center text-red-600">
+            {testimonialError}
+          </div>
+        ) : testimonials.length === 0 ? (
+          /* Empty */
+          <div className="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-white p-8 text-center text-slate-500">
+            No testimonials available yet.
+          </div>
+        ) : (
+          /* Testimonials Grid */
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <div
+                key={testimonial._id}
+                className="flex h-full min-w-0 flex-col rounded-3xl bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:p-7"
+              >
+                {/* Stars */}
+                <div className="mb-5 flex gap-1 text-yellow-400">
+                  {[...Array(testimonial.rating)].map((_, index) => (
+                    <FaStar key={index} />
+                  ))}
+                </div>
+
+                {/* Review */}
+                <p className="flex-1 break-words text-base leading-7 text-slate-600">
+                  "{testimonial.message}"
+                </p>
+
+                {/* User */}
+                <div className="mt-8 flex min-w-0 items-center gap-4 border-t border-slate-100 pt-6">
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="h-12 w-12 shrink-0 rounded-full object-cover"
+                  />
+
+                  <div className="min-w-0">
+                    <h4 className="truncate font-semibold text-slate-900">
+                      {testimonial.name}
+                    </h4>
+
+                    <p className="truncate text-sm text-slate-500">
+                      {testimonial.role}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+      </div>
     </section>
-
       {/* CTA */}
       <section className="bg-slate-900 py-20 text-center text-white">
 

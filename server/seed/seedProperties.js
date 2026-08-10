@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const Property = require("../models/Property");
-const properties = require("./propertyData");
+const properties = require("../data/propertyData");
 
 dotenv.config();
 
