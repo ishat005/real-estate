@@ -64,10 +64,10 @@ const Login = () => {
         );
       }
 
-      login(data, rememberMe);
+    await login(data, rememberMe);
 
-      // Redirect after successful login
-      navigate("/");
+    // Redirect after successful login
+    navigate("/");
     } catch (error) {
       setError(error.message);
     } finally {

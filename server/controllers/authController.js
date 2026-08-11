@@ -128,19 +128,24 @@ const login = async (req, res) => {
 
 const getMe = async (req, res) => {
   try {
-    res.json({
-      user: {
-        id: req.user._id,
-        name: req.user.name,
-        email: req.user.email,
-        role: req.user.role,
-      },
+    const user = await User.findById(req.user._id)
+      .select("-password")
+      .populate("favorites");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    res.status(200).json({
+      user,
     });
   } catch (error) {
-    console.error("Get current user error:", error);
+    console.error("Get me error:", error);
 
     res.status(500).json({
-      message: "Server error",
+      message: "Failed to fetch user.",
     });
   }
 };
