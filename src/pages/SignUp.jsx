@@ -1,9 +1,12 @@
+import { GoogleLogin } from "@react-oauth/google";
 import backgroundImage from "../assets/images/backgroundImage.jfif";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -55,7 +58,7 @@ const Signup = () => {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/signup",
+        `${import.meta.env.VITE_API_URL}/auth/signup`,
         {
           method: "POST",
           headers: {
@@ -75,16 +78,51 @@ const Signup = () => {
         throw new Error(data.message || "Unable to create account.");
       }
 
-      // Store JWT
-      localStorage.setItem("token", data.token);
-
-      // Store user information
-      localStorage.setItem("user", JSON.stringify(data.user));
+      // Store token/user via AuthContext (keeps behavior consistent
+      // with Google signup and with Login.jsx)
+      await login(data, false);
 
       // Redirect to homepage
       navigate("/");
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setError("");
+      setLoading(true);
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/google`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            credential: credentialResponse.credential,
+            isSignup: true,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Google signup failed.");
+      }
+
+      await login(data, false);
+
+      navigate("/");
+    } catch (error) {
+      console.error("Google signup error:", error);
+
+      setError(error.message || "Google signup failed.");
     } finally {
       setLoading(false);
     }
@@ -105,7 +143,7 @@ const Signup = () => {
       {/* Signup Card */}
       <div className="relative flex min-h-screen items-center justify-center px-6 py-8">
         <div className="w-full max-w-md rounded-3xl border border-white/20 bg-white/65 p-5 shadow-2xl backdrop-blur-lg">
-          
+
           {/* Logo */}
           <h1 className="mb-2 text-center text-3xl font-bold text-slate-900">
             La Maison
@@ -236,12 +274,13 @@ const Signup = () => {
           </div>
 
           {/* Google Button */}
-          <button
-            type="button"
-            className="h-11 w-full rounded-xl border border-gray-300 bg-white px-4 font-medium transition hover:bg-gray-100"
-          >
-            Continue with Google
-          </button>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+              setError("Google signup failed. Please try again.");
+            }}
+            width="100%"
+          />
 
           {/* Login Link */}
           <p className="mt-6 text-center text-sm text-gray-600">

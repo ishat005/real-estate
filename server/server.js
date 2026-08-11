@@ -8,40 +8,50 @@ dotenv.config();
 
 const app = express();
 
-// Connect to MongoDB
+// ==============================
+// DATABASE
+// ==============================
 connectDB();
 
-// Middleware
-app.use(cors());
+// ==============================
+// MIDDLEWARE
+// ==============================
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+  })
+);
+
 app.use(express.json());
 
-// Test route
+// ==============================
+// TEST ROUTE
+// ==============================
 app.get("/", (req, res) => {
   res.json({
     message: "La Maison API is running",
   });
 });
 
-// Auth routes
+// ==============================
+// ROUTES
+// ==============================
+
 app.use("/api/auth", require("./routes/authRoutes"));
 
-// Property routes
 app.use("/api/properties", require("./routes/propertyRoutes"));
 
-// Testimonial routes
-app.use("/api/testimonials", require("./routes/testimonialRoutes"));
+app.use(
+  "/api/testimonials",
+  require("./routes/testimonialRoutes")
+);
 
-// Contact routes
 app.use("/api/contacts", require("./routes/contactRoutes"));
 
-const authRoutes = require("./routes/authRoutes");
-app.use("/api/auth", authRoutes);
+app.use("/api/favorites", require("./routes/favoriteRoutes"));
 
-const favoriteRoutes = require("./routes/favoriteRoutes");
-app.use("/api/favorites", favoriteRoutes);
+// ==============================
+// EXPORT APP
+// ==============================
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+module.exports = app;

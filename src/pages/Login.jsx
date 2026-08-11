@@ -1,3 +1,4 @@
+import { GoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import backgroundImage from "../assets/images/backgroundImage.jfif";
 import { Link, useNavigate } from "react-router-dom";
@@ -43,7 +44,7 @@ const Login = () => {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/login",
+        `${import.meta.env.VITE_API_URL}/auth/login`,
         {
           method: "POST",
           headers: {
@@ -59,17 +60,52 @@ const Login = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Invalid email or password."
-        );
+        throw new Error(data.message || "Invalid email or password.");
       }
 
-    await login(data, rememberMe);
+      await login(data, rememberMe);
 
-    // Redirect after successful login
-    navigate("/");
+      // Redirect after successful login
+      navigate("/");
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setError("");
+      setLoading(true);
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/google`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            credential: credentialResponse.credential,
+            isSignup: false,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Google login failed.");
+      }
+
+      await login(data, rememberMe);
+
+      navigate("/");
+    } catch (error) {
+      console.error("Google login error:", error);
+
+      setError(error.message || "Google login failed.");
     } finally {
       setLoading(false);
     }
@@ -108,13 +144,13 @@ const Login = () => {
           )}
 
           {/* Google Button */}
-          <button
-            type="button"
-            className="flex h-11 w-full items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white font-medium transition-all duration-300 hover:bg-gray-100 hover:shadow-md"
-          >
-            <FaGoogle className="text-red-500" />
-            Continue with Google
-          </button>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+              setError("Google login failed. Please try again.");
+            }}
+            width="100%"
+          />
 
           {/* Divider */}
           <div className="my-6 flex items-center">
