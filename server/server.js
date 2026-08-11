@@ -37,6 +37,9 @@ app.use("/api/contacts", require("./routes/contactRoutes"));
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
 
+const favoriteRoutes = require("./routes/favoriteRoutes");
+app.use("/api/favorites", favoriteRoutes);
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
