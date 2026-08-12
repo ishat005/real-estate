@@ -2,7 +2,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import backgroundImage from "../assets/images/backgroundImage.jfif";
 import { Link, useNavigate } from "react-router-dom";
-import { FaGoogle, FaEnvelope, FaLock } from "react-icons/fa";
+import { FaGoogle, FaEnvelope } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {

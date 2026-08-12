@@ -109,7 +109,7 @@ const Contact = () => {
       // 1. SAVE CONTACT MESSAGE TO MONGODB
       // ==========================================
       const response = await fetch(
-        `${API_URL}/api/contact`,
+        `${API_URL}/api/contacts`,
         {
           method: "POST",
           headers: {
