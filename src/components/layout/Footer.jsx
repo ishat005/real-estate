@@ -1,5 +1,5 @@
-import equinix from "../assets/images/equinix.webp";
-import digitalRealty from "../assets/images/digitalRealty.webp";
+import equinix from "../../assets/images/equinix.webp";
+import digitalRealty from "../../assets/images/digitalRealty.webp";
 
 const Footer = () => {
   return (
