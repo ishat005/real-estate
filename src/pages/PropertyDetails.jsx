@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const PropertyDetails = () => {
   const { id } = useParams();
 
@@ -15,7 +17,7 @@ const PropertyDetails = () => {
         setError("");
 
         const response = await fetch(
-          `http://localhost:5000/api/properties/${id}`
+          `${API_URL}/api/properties/${id}`
         );
 
         const data = await response.json();

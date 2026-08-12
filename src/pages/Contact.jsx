@@ -9,6 +9,8 @@ import {
   FaPaperPlane,
 } from "react-icons/fa";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -107,7 +109,7 @@ const Contact = () => {
       // 1. SAVE CONTACT MESSAGE TO MONGODB
       // ==========================================
       const response = await fetch(
-        "http://localhost:5000/api/contacts",
+        `${API_URL}/api/contact`,
         {
           method: "POST",
           headers: {

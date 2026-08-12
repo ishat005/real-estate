@@ -11,7 +11,7 @@ import {
   FaStar
 } from "react-icons/fa6";
 
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 const About = () => {
   const [testimonials, setTestimonials] = useState([]);
@@ -32,7 +32,7 @@ const About = () => {
         setTestimonialError("");
 
         const response = await fetch(
-          "http://localhost:5000/api/testimonials"
+          `${API_URL}/api/testimonials`
         );
 
         const data = await response.json();

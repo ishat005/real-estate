@@ -1,10 +1,10 @@
-const API_URL = "http://localhost:5000/api/favorites";
+const API_URL = import.meta.env.VITE_API_URL;
 
 // ==========================================
 // GET USER FAVORITES
 // ==========================================
 export const getFavorites = async (token) => {
-  const response = await fetch(API_URL, {
+  const response = await fetch(`${API_URL}/api/favorites`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
