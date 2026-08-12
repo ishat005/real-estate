@@ -7,6 +7,7 @@ import {
   FaEnvelope,
   FaClock,
   FaPaperPlane,
+  FaArrowRight,
 } from "react-icons/fa";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -108,23 +109,18 @@ const Contact = () => {
       // ==========================================
       // 1. SAVE CONTACT MESSAGE TO MONGODB
       // ==========================================
-      const response = await fetch(
-        `${API_URL}/api/contacts`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/contacts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to save your message."
-        );
+        throw new Error(data.message || "Failed to save your message.");
       }
 
       // ==========================================
@@ -174,156 +170,153 @@ const Contact = () => {
     }
   };
 
+  const contactDetails = [
+    {
+      icon: FaMapMarkerAlt,
+      title: "Our Office",
+      lines: ["453 West 12th Avenue,", "Vancouver, BC"],
+    },
+    {
+      icon: FaPhoneAlt,
+      title: "Phone",
+      lines: ["+234 800 123 4567"],
+    },
+    {
+      icon: FaEnvelope,
+      title: "Email",
+      lines: ["tisha8357@gmail.com"],
+      breakAll: true,
+    },
+    {
+      icon: FaClock,
+      title: "Opening Hours",
+      lines: ["Monday – Friday: 9:00 AM – 6:00 PM", "Saturday: 10:00 AM – 4:00 PM"],
+    },
+  ];
+
   return (
-    <div>
-      {/* ==========================================
-          HERO
-      ========================================== */}
-      <section className="bg-[#dfeaf5] py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-6 text-center">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">
-            Get In Touch
-          </p>
+    <div className="min-h-screen bg-slate-50">
 
-          <h1 className="text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
-            Contact Us
-          </h1>
+      {/* =====================================================
+          HERO SECTION
+      ====================================================== */}
+      <section className="relative overflow-hidden bg-white">
 
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-            Have a question about a property or need help finding your
-            perfect home? Our team is here to help.
-          </p>
+        <div className="absolute -right-40 -top-40 h-96 w-96 rounded-full bg-slate-100 blur-3xl" />
+
+        <div className="relative mx-auto max-w-8xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+
+          <div className="mx-auto max-w-3xl text-center">
+
+            <div className="mb-5 flex items-center justify-center gap-3">
+              <span className="h-px w-10 bg-slate-900" />
+              <span className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+                Get In Touch
+              </span>
+              <span className="h-px w-10 bg-slate-900" />
+            </div>
+
+            <h1 className="text-4xl font-bold leading-[1.08] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+              Contact Us
+            </h1>
+
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+              Have a question about a property or need help finding your
+              perfect home? Our team is here to help.
+            </p>
+
+          </div>
+
         </div>
       </section>
 
-      {/* ==========================================
+      {/* =====================================================
           CONTACT CONTENT
-      ========================================== */}
-      <section className="mx-auto max-w-7xl px-6 py-12 lg:py-16">
-        <div className="grid gap-8 lg:grid-cols-2">
+      ====================================================== */}
+      <section className="mx-auto max-w-8xl px-4 py-16 sm:px-6 lg:px-8">
+
+        <div className="grid gap-6 lg:grid-cols-2">
 
           {/* ======================================
               CONTACT INFORMATION
           ====================================== */}
-          <div className="rounded-3xl bg-white p-7 shadow-sm sm:p-8">
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-slate-950">
-                Get In Touch
-              </h2>
+          <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
 
-              <p className="mt-2 text-slate-600">
-                Reach out to us and one of our property specialists
-                will get back to you shortly.
-              </p>
+            <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+              <span className="h-px w-8 bg-slate-400" />
+              Contact Info
             </div>
 
-            <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-slate-950">
+              Get In Touch
+            </h2>
 
-              {/* Address */}
-              <div className="flex gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#dfeaf5] text-slate-900">
-                  <FaMapMarkerAlt />
+            <p className="mt-2 text-slate-600">
+              Reach out to us and one of our property specialists will get
+              back to you shortly.
+            </p>
+
+            <div className="mt-8 space-y-6">
+              {contactDetails.map(({ icon: Icon, title, lines, breakAll }) => (
+                <div key={title} className="flex gap-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-900">
+                    <Icon />
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-slate-900">
+                      {title}
+                    </h3>
+
+                    <p
+                      className={`mt-1 text-sm leading-6 text-slate-600 ${
+                        breakAll ? "break-all" : ""
+                      }`}
+                    >
+                      {lines.map((line, index) => (
+                        <span key={line}>
+                          {line}
+                          {index < lines.length - 1 && <br />}
+                        </span>
+                      ))}
+                    </p>
+                  </div>
                 </div>
-
-                <div>
-                  <h3 className="font-semibold text-slate-900">
-                    Our Office
-                  </h3>
-
-                  <p className="mt-1 text-sm leading-6 text-slate-600">
-                    453 West 12th Avenue,
-                    <br />
-                    Vancouver, BC
-                  </p>
-                </div>
-              </div>
-
-              {/* Phone */}
-              <div className="flex gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#dfeaf5] text-slate-900">
-                  <FaPhoneAlt />
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-slate-900">
-                    Phone
-                  </h3>
-
-                  <p className="mt-1 text-sm text-slate-600">
-                    +234 800 123 4567
-                  </p>
-                </div>
-              </div>
-
-              {/* Email */}
-              <div className="flex gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#dfeaf5] text-slate-900">
-                  <FaEnvelope />
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-slate-900">
-                    Email
-                  </h3>
-
-                  <p className="mt-1 break-all text-sm text-slate-600">
-                    tisha8357@gmail.com
-                  </p>
-                </div>
-              </div>
-
-              {/* Opening Hours */}
-              <div className="flex gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#dfeaf5] text-slate-900">
-                  <FaClock />
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-slate-900">
-                    Opening Hours
-                  </h3>
-
-                  <p className="mt-1 text-sm leading-6 text-slate-600">
-                    Monday – Friday: 9:00 AM – 6:00 PM
-                    <br />
-                    Saturday: 10:00 AM – 4:00 PM
-                  </p>
-                </div>
-              </div>
-
+              ))}
             </div>
+
           </div>
 
           {/* ======================================
               CONTACT FORM
           ====================================== */}
-          <div className="rounded-3xl bg-white p-7 shadow-sm sm:p-8">
+          <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
 
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-slate-950">
-                Send Us a Message
-              </h2>
-
-              <p className="mt-2 text-slate-600">
-                Fill out the form below and we'll get back to you.
-              </p>
+            <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+              <span className="h-px w-8 bg-slate-400" />
+              Send a Message
             </div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-4"
-            >
+            <h2 className="text-2xl font-bold text-slate-950">
+              Send Us a Message
+            </h2>
+
+            <p className="mt-2 text-slate-600">
+              Fill out the form below and we'll get back to you.
+            </p>
+
+            <form onSubmit={handleSubmit} className="mt-6 space-y-4">
 
               {/* Success Message */}
               {success && (
-                <div className="rounded-xl border border-green-200 bg-green-50 p-4 text-sm leading-6 text-green-700">
+                <div className="rounded-xl border border-green-100 bg-green-50 p-4 text-sm leading-6 text-green-700">
                   {success}
                 </div>
               )}
 
               {/* Error Message */}
               {error && (
-                <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-700">
+                <div className="rounded-xl border border-red-100 bg-red-50 p-4 text-sm leading-6 text-red-700">
                   {error}
                 </div>
               )}
@@ -344,7 +337,7 @@ const Contact = () => {
                   required
                   autoComplete="name"
                   placeholder="Enter your full name"
-                  className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900"
+                  className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
                 />
               </div>
 
@@ -364,10 +357,10 @@ const Contact = () => {
                   required
                   autoComplete="email"
                   placeholder="Enter your email"
-                  className={`h-11 w-full rounded-xl border bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 ${
+                  className={`h-12 w-full rounded-xl border bg-slate-50 px-4 text-sm text-slate-700 outline-none transition-all duration-200 placeholder:text-slate-400 focus:bg-white focus:ring-4 ${
                     validationErrors.email
-                      ? "border-red-400 focus:border-red-500"
-                      : "border-slate-200 focus:border-slate-900"
+                      ? "border-red-300 focus:border-red-500 focus:ring-red-500/5"
+                      : "border-slate-200 focus:border-slate-900 focus:ring-slate-900/5"
                   }`}
                 />
 
@@ -393,10 +386,10 @@ const Contact = () => {
                   onChange={handleChange}
                   autoComplete="tel"
                   placeholder="Enter your phone number"
-                  className={`h-11 w-full rounded-xl border bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 ${
+                  className={`h-12 w-full rounded-xl border bg-slate-50 px-4 text-sm text-slate-700 outline-none transition-all duration-200 placeholder:text-slate-400 focus:bg-white focus:ring-4 ${
                     validationErrors.phone
-                      ? "border-red-400 focus:border-red-500"
-                      : "border-slate-200 focus:border-slate-900"
+                      ? "border-red-300 focus:border-red-500 focus:ring-red-500/5"
+                      : "border-slate-200 focus:border-slate-900 focus:ring-slate-900/5"
                   }`}
                 />
 
@@ -426,7 +419,7 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   placeholder="What can we help you with?"
-                  className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900"
+                  className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-700 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
                 />
               </div>
 
@@ -445,7 +438,7 @@ const Contact = () => {
                   required
                   rows="5"
                   placeholder="Write your message..."
-                  className="w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-slate-900"
+                  className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
                 />
               </div>
 
@@ -455,10 +448,9 @@ const Contact = () => {
               <button
                 type="submit"
                 disabled={sending}
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-lg disabled:pointer-events-none disabled:opacity-60 disabled:hover:translate-y-0"
               >
                 <FaPaperPlane size={13} />
-
                 {sending ? "Sending..." : "Send Message"}
               </button>
 
@@ -467,20 +459,36 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* ==========================================
+      {/* =====================================================
           FAQ TEASER
-      ========================================== */}
-      <section className="mx-auto max-w-7xl px-6 pb-16">
-        <div className="rounded-3xl bg-[#dfeaf5] px-6 py-10 text-center sm:px-10">
-          <h2 className="text-2xl font-bold text-slate-950">
+      ====================================================== */}
+      <section className="mx-auto max-w-8xl px-4 pb-16 sm:px-6 lg:px-8">
+
+        <div className="overflow-hidden rounded-3xl bg-slate-950 px-6 py-12 text-center sm:px-10 lg:px-14">
+
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+            Still curious
+          </p>
+
+          <h2 className="mx-auto mt-3 max-w-xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Have More Questions?
           </h2>
 
-          <p className="mx-auto mt-2 max-w-xl text-slate-600">
-            Check out our frequently asked questions or get in touch
-            with our team for more information.
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-slate-400">
+            Check out our frequently asked questions or get in touch with
+            our team for more information.
           </p>
+
+          <a
+            href="mailto:tisha8357@gmail.com"
+            className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-100"
+          >
+            Email Us
+            <FaArrowRight className="text-xs transition-transform duration-300 group-hover:translate-x-1" />
+          </a>
+
         </div>
+
       </section>
     </div>
   );

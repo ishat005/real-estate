@@ -10,6 +10,7 @@ import {
   FaBed,
   FaBath,
   FaRulerCombined,
+  FaArrowRight,
 } from "react-icons/fa";
 
 import { useAuth } from "../context/AuthContext";
@@ -74,7 +75,6 @@ const Profile = () => {
 
       await removeFavorite(propertyId, token);
 
-      // Remove immediately from the screen
       setFavorites((prevFavorites) =>
         prevFavorites.filter(
           (property) => property._id !== propertyId
@@ -84,7 +84,8 @@ const Profile = () => {
       console.error("Remove favorite error:", error);
 
       setFavoriteError(
-        error.message || "Failed to remove property from favourites."
+        error.message ||
+          "Failed to remove property from favourites."
       );
     } finally {
       setRemovingId(null);
@@ -98,7 +99,9 @@ const Profile = () => {
     return null;
   }
 
-  // Generate initials
+  // ==========================================
+  // INITIALS
+  // ==========================================
   const initials = user.name
     ? user.name
         .split(" ")
@@ -108,51 +111,60 @@ const Profile = () => {
     : "U";
 
   return (
-    <div className="min-h-screen bg-slate-100 px-4 py-10 sm:px-6">
-      <div className="mx-auto max-w-5xl">
+    <div className="min-h-screen bg-slate-50 px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl">
 
         {/* ==========================================
-            HEADER
+            PAGE INTRO
         ========================================== */}
         <div className="mb-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
             Account
           </p>
 
-          <h1 className="mt-2 text-3xl font-bold text-slate-950 sm:text-4xl">
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
             My Profile
           </h1>
 
-          <p className="mt-2 text-slate-600">
-            Manage your account information and preferences.
+          <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500 sm:text-base">
+            Manage your account information and keep track of
+            properties you love.
           </p>
         </div>
 
         {/* ==========================================
             PROFILE CARD
         ========================================== */}
-        <div className="overflow-hidden rounded-3xl bg-white shadow-sm">
+        <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
           {/* Profile Header */}
-          <div className="bg-[#dfeaf5] px-6 py-8 sm:px-8">
-            <div className="flex flex-col items-center gap-4 sm:flex-row">
+          <div className="relative overflow-hidden bg-[#dfeaf5] px-6 py-8 sm:px-8 sm:py-10">
+
+            {/* Decorative circle */}
+            <div className="absolute -right-16 -top-20 h-48 w-48 rounded-full bg-white/30" />
+
+            <div className="relative flex flex-col items-center gap-5 sm:flex-row">
 
               {/* Avatar */}
-              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-slate-950 text-2xl font-bold text-white shadow-md">
+              <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full bg-slate-950 text-2xl font-bold text-white shadow-lg ring-4 ring-white/60">
                 {initials}
               </div>
 
               {/* User Info */}
               <div className="text-center sm:text-left">
-                <h2 className="text-2xl font-bold text-slate-950">
+                <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  Welcome back
+                </p>
+
+                <h2 className="text-2xl font-bold tracking-tight text-slate-950">
                   {user.name}
                 </h2>
 
-                <p className="mt-1 text-slate-600">
+                <p className="mt-1 text-sm text-slate-600">
                   {user.email}
                 </p>
 
-                <span className="mt-3 inline-block rounded-full bg-white px-3 py-1 text-xs font-semibold capitalize text-slate-700">
+                <span className="mt-3 inline-flex rounded-full bg-white px-3 py-1 text-xs font-semibold capitalize text-slate-700 shadow-sm">
                   {user.role || "User"}
                 </span>
               </div>
@@ -160,24 +172,31 @@ const Profile = () => {
           </div>
 
           {/* ==========================================
-              PERSONAL INFORMATION
+              PROFILE CONTENT
           ========================================== */}
           <div className="p-6 sm:p-8">
 
-            <h3 className="mb-5 text-xl font-bold text-slate-950">
-              Personal Information
-            </h3>
+            {/* Personal Information */}
+            <div>
+              <div className="mb-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+                  Account Details
+                </p>
 
-            <div className="space-y-4">
+                <h3 className="mt-1 text-xl font-bold text-slate-950">
+                  Personal Information
+                </h3>
+              </div>
 
-              {/* Name */}
-              <div className="flex items-center gap-4 rounded-2xl border border-slate-200 p-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100">
-                  <FaUser className="text-slate-600" />
-                </div>
+              <div className="grid gap-4 md:grid-cols-3">
 
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                {/* Name */}
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-slate-300 hover:bg-white">
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-sm">
+                    <FaUser className="text-slate-600" />
+                  </div>
+
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                     Full Name
                   </p>
 
@@ -185,33 +204,29 @@ const Profile = () => {
                     {user.name}
                   </p>
                 </div>
-              </div>
 
-              {/* Email */}
-              <div className="flex items-center gap-4 rounded-2xl border border-slate-200 p-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100">
-                  <FaEnvelope className="text-slate-600" />
-                </div>
+                {/* Email */}
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-slate-300 hover:bg-white">
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-sm">
+                    <FaEnvelope className="text-slate-600" />
+                  </div>
 
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                     Email Address
                   </p>
 
-                  <p className="mt-1 font-semibold text-slate-900">
+                  <p className="mt-1 break-all font-semibold text-slate-900">
                     {user.email}
                   </p>
                 </div>
-              </div>
 
-              {/* Role */}
-              <div className="flex items-center gap-4 rounded-2xl border border-slate-200 p-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100">
-                  <FaShieldAlt className="text-slate-600" />
-                </div>
+                {/* Role */}
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-slate-300 hover:bg-white">
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-sm">
+                    <FaShieldAlt className="text-slate-600" />
+                  </div>
 
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                     Account Type
                   </p>
 
@@ -219,29 +234,36 @@ const Profile = () => {
                     {user.role || "User"}
                   </p>
                 </div>
-              </div>
 
+              </div>
             </div>
 
             {/* ==========================================
-                MY FAVOURITES
+                FAVOURITES
             ========================================== */}
             <div className="mt-12 border-t border-slate-200 pt-10">
 
-              <div className="mb-6 flex items-center justify-between">
+              {/* Section Header */}
+              <div className="mb-6 flex items-start justify-between gap-4">
+
                 <div>
-                  <h3 className="text-2xl font-bold text-slate-950">
+                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+                    Saved Properties
+                  </p>
+
+                  <h3 className="mt-1 text-2xl font-bold text-slate-950">
                     My Favourites
                   </h3>
 
-                  <p className="mt-1 text-slate-500">
-                    Properties you have saved.
+                  <p className="mt-1 text-sm text-slate-500">
+                    Properties you have saved for later.
                   </p>
                 </div>
 
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-50">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-50">
                   <FaHeart className="text-red-500" />
                 </div>
+
               </div>
 
               {/* Error */}
@@ -253,41 +275,49 @@ const Profile = () => {
 
               {/* Loading */}
               {loadingFavorites ? (
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-8 text-center">
-                  <p className="text-slate-500">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-10 text-center">
+                  <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-slate-900" />
+
+                  <p className="text-sm text-slate-500">
                     Loading your favourites...
                   </p>
                 </div>
               ) : favorites.length === 0 ? (
-                /* Empty state */
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-10 text-center">
+
+                /* Empty State */
+                <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+
                   <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm">
                     <FaHeart className="text-xl text-slate-300" />
                   </div>
 
-                  <h4 className="mt-4 text-lg font-bold text-slate-900">
+                  <h4 className="mt-5 text-lg font-bold text-slate-900">
                     No favourites yet
                   </h4>
 
-                  <p className="mt-2 text-sm text-slate-500">
-                    Save properties you love and they will appear here.
+                  <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+                    Save properties you love and they will appear
+                    here so you can easily find them again.
                   </p>
 
                   <Link
                     to="/properties"
-                    className="mt-5 inline-flex rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                    className="mt-6 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
                   >
                     Browse Properties
+                    <FaArrowRight className="text-xs" />
                   </Link>
+
                 </div>
+
               ) : (
-                /* Favourite properties */
+
+                /* Favourite Properties */
                 <div className="grid gap-6 md:grid-cols-2">
 
                   {favorites.map((property) => {
                     const propertyId = property._id;
 
-                    // Your Property model uses images[]
                     const image =
                       property.images?.[0] ||
                       "https://via.placeholder.com/800x600?text=Property";
@@ -295,44 +325,51 @@ const Profile = () => {
                     return (
                       <article
                         key={propertyId}
-                        className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                        className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
                       >
 
                         {/* Image */}
                         <div className="relative aspect-[4/3] overflow-hidden">
+
                           <img
                             src={image}
                             alt={property.title}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                           />
 
-                          {/* Remove favourite */}
+                          {/* Image Overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-60" />
+
+                          {/* Property Type */}
+                          <span className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm">
+                            {property.propertyType}
+                          </span>
+
+                          {/* Remove Favourite */}
                           <button
                             type="button"
                             onClick={() =>
                               handleRemoveFavorite(propertyId)
                             }
-                            disabled={removingId === propertyId}
+                            disabled={
+                              removingId === propertyId
+                            }
                             aria-label="Remove from favourites"
                             className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                           >
                             <FaHeart
-                              size={16}
+                              size={15}
                               className="text-red-500"
                             />
                           </button>
+
                         </div>
 
                         {/* Content */}
                         <div className="p-5">
 
-                          {/* Property Type */}
-                          <span className="inline-block rounded-lg bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                            {property.propertyType}
-                          </span>
-
                           {/* Title */}
-                          <h4 className="mt-3 line-clamp-2 text-xl font-bold text-slate-900">
+                          <h4 className="line-clamp-2 text-xl font-bold text-slate-900">
                             {property.title}
                           </h4>
 
@@ -346,36 +383,36 @@ const Profile = () => {
                           </div>
 
                           {/* Details */}
-                          <div className="my-5 grid grid-cols-3 gap-2 border-y border-slate-100 py-4">
+                          <div className="my-5 grid grid-cols-3 gap-3 border-y border-slate-100 py-4">
 
                             <div className="flex items-center gap-2 text-sm text-slate-600">
                               <FaBed className="text-slate-400" />
                               <span>
-                                {property.bedrooms}
+                                {property.bedrooms} Bed
                               </span>
                             </div>
 
                             <div className="flex items-center gap-2 text-sm text-slate-600">
                               <FaBath className="text-slate-400" />
                               <span>
-                                {property.bathrooms}
+                                {property.bathrooms} Bath
                               </span>
                             </div>
 
                             <div className="flex items-center gap-2 text-sm text-slate-600">
                               <FaRulerCombined className="text-slate-400" />
                               <span>
-                                {property.area}
+                                {property.area} sqft
                               </span>
                             </div>
 
                           </div>
 
                           {/* Price + View */}
-                          <div className="flex items-end justify-between gap-3">
+                          <div className="flex items-end justify-between gap-4">
 
                             <div>
-                              <p className="text-xs text-slate-500">
+                              <p className="text-xs text-slate-400">
                                 Starting from
                               </p>
 
@@ -387,9 +424,10 @@ const Profile = () => {
 
                             <Link
                               to={`/properties/${propertyId}`}
-                              className="shrink-0 rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+                              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
                             >
                               View
+                              <FaArrowRight className="text-xs" />
                             </Link>
 
                           </div>
@@ -401,6 +439,7 @@ const Profile = () => {
 
                 </div>
               )}
+
             </div>
 
             {/* ==========================================
@@ -418,15 +457,20 @@ const Profile = () => {
 
               <Link
                 to="/properties"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-slate-400 hover:bg-slate-50"
               >
                 Browse Properties
+                <FaArrowRight className="text-xs" />
               </Link>
 
             </div>
 
           </div>
-        </div>
+        </section>
+
+        {/* Bottom spacing */}
+        <div className="h-6" />
+
       </div>
     </div>
   );

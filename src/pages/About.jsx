@@ -8,7 +8,8 @@ import {
   FaLocationDot,
   FaHandshake,
   FaGem,
-  FaStar
+  FaStar,
+  FaArrowRight,
 } from "react-icons/fa6";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -18,11 +19,30 @@ const About = () => {
   const [loadingTestimonials, setLoadingTestimonials] = useState(true);
   const [testimonialError, setTestimonialError] = useState("");
 
-  const stats = [
-    { value: "1200+", label: "Listed Properties" },
-    { value: "4500+", label: "Happy Customers" },
-    { value: "100+", label: "Awards Won" },
-    { value: "15+", label: "Years of Experience" },
+  const values = [
+    {
+      icon: FaShieldHalved,
+      title: "Verified Listings",
+      description:
+        "Every property is carefully verified for quality and authenticity.",
+    },
+    {
+      icon: FaLocationDot,
+      title: "Prime Locations",
+      description:
+        "Discover homes in the most desirable cities and neighborhoods.",
+    },
+    {
+      icon: FaHandshake,
+      title: "Trusted Service",
+      description:
+        "Transparency and customer satisfaction are at the heart of what we do.",
+    },
+    {
+      icon: FaGem,
+      title: "Luxury Experience",
+      description: "Explore premium homes crafted for modern lifestyles.",
+    },
   ];
 
   useEffect(() => {
@@ -31,22 +51,18 @@ const About = () => {
         setLoadingTestimonials(true);
         setTestimonialError("");
 
-        const response = await fetch(
-          `${API_URL}/api/testimonials`
-        );
+        const response = await fetch(`${API_URL}/api/testimonials`);
 
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(
-            data.message || "Failed to fetch testimonials."
-          );
+          throw new Error(data.message || "Failed to fetch testimonials.");
         }
 
-        setTestimonials(data.testimonials);
+        setTestimonials(data.testimonials || []);
       } catch (error) {
         console.error("Fetch testimonials error:", error);
-        setTestimonialError(error.message);
+        setTestimonialError(error.message || "Unable to load testimonials.");
       } finally {
         setLoadingTestimonials(false);
       }
@@ -56,195 +72,208 @@ const About = () => {
   }, []);
 
   return (
-    <div className="bg-slate-100 text-slate-900">
+    <div className="min-h-screen bg-slate-50">
 
-      {/* Hero Section */}
-      <section className="bg-[#dfeaf5] py-20">
-        <div className="mx-auto max-w-7xl px-6 text-center">
-          <h1 className="text-5xl font-black text-slate-950">
-            About La Maison
-          </h1>
+      {/* =====================================================
+          HERO SECTION
+      ====================================================== */}
+      <section className="relative overflow-hidden bg-white">
+        <div className="absolute -right-40 -top-40 h-96 w-96 rounded-full bg-slate-100 blur-3xl" />
 
-          <p className="mx-auto mt-6 max-w-3xl text-lg text-slate-600">
-            Helping individuals and families discover homes that perfectly
-            complement their lifestyle, aspirations, and future.
-          </p>
+        <div className="relative mx-auto max-w-8xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
 
-          <Link
-            to="/properties"
-            className="mt-8 inline-block rounded-lg bg-slate-900 px-6 py-3 font-semibold text-white transition hover:bg-slate-800"
-          >
-            Explore Properties
-          </Link>
+          <div className="mx-auto max-w-3xl text-center">
+
+            <div className="mb-5 flex items-center justify-center gap-3">
+              <span className="h-px w-10 bg-slate-900" />
+              <span className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+                About Us
+              </span>
+              <span className="h-px w-10 bg-slate-900" />
+            </div>
+
+            <h1 className="text-4xl font-bold leading-[1.08] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+              About La Maison
+            </h1>
+
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+              Helping individuals and families discover homes that perfectly
+              complement their lifestyle, aspirations, and future.
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                to="/properties"
+                className="group inline-flex items-center gap-2 rounded-xl bg-slate-950 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-lg"
+              >
+                Explore Properties
+                <FaArrowRight className="text-xs transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Our Story */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+      {/* =====================================================
+          OUR STORY
+      ====================================================== */}
+      <section className="mx-auto max-w-8xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div>
-            <h2 className="mb-6 text-4xl font-bold">
+            <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+              <span className="h-px w-8 bg-slate-400" />
               Our Story
+            </div>
+
+            <h2 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+              A stress-free way to find home
             </h2>
 
-            <p className="mb-6 leading-8 text-slate-600">
-              At <span className="font-semibold">La Maison</span>, we believe
-              finding a home should be an exciting and stress-free journey.
-              Our mission is to connect buyers, renters, and investors with
-              carefully selected properties that meet their lifestyle and
-              financial goals.
+            <p className="mt-6 leading-7 text-slate-600">
+              At <span className="font-semibold text-slate-900">La Maison</span>,
+              we believe finding a home should be an exciting and stress-free
+              journey. Our mission is to connect buyers, renters, and
+              investors with carefully selected properties that meet their
+              lifestyle and financial goals.
             </p>
 
-            <p className="leading-8 text-slate-600">
+            <p className="mt-4 leading-7 text-slate-600">
               From modern apartments to luxury villas, every listing on our
-              platform is chosen with quality, trust, and transparency in mind.
-              We strive to make every step of your property journey simple,
-              secure, and rewarding.
+              platform is chosen with quality, trust, and transparency in
+              mind. We strive to make every step of your property journey
+              simple, secure, and rewarding.
             </p>
           </div>
 
-          <div>
-            <img
-              src="https://images.unsplash.com/photo-1505843513577-22bb7d21e455?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?auto=format&fit=crop&w=1000&q=80"
-              alt="Luxury Home"
-              className="rounded-3xl shadow-xl"
-            />
+          <div className="relative">
+            <div className="absolute -bottom-4 -left-4 h-24 w-24 rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-sm" />
+
+            <div className="relative overflow-hidden rounded-[2rem] shadow-2xl shadow-slate-300/40">
+              <img
+                src="https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=1400&q=85"
+                alt="Luxury Home"
+                className="h-[360px] w-full object-cover transition duration-700 hover:scale-105 sm:h-[420px]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="bg-white py-20">
-        <div className="mx-auto grid max-w-7xl gap-8 px-6 md:grid-cols-2">
+      {/* =====================================================
+          MISSION & VISION
+      ====================================================== */}
+      <section className="mx-auto max-w-8xl px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100">
+              <FaBullseye className="text-xl text-slate-900" />
+            </div>
 
-          <div className="rounded-3xl bg-slate-50 p-8 shadow-sm">
-            <FaBullseye className="mb-5 text-4xl text-slate-900" />
-
-            <h3 className="mb-4 text-2xl font-bold">
+            <h3 className="mt-5 text-xl font-bold text-slate-950">
               Our Mission
             </h3>
 
-            <p className="leading-8 text-slate-600">
-              To simplify the real estate experience through trusted listings,
-              innovative technology, and exceptional customer service.
+            <p className="mt-3 leading-7 text-slate-600">
+              To simplify the real estate experience through trusted
+              listings, innovative technology, and exceptional customer
+              service.
             </p>
           </div>
 
-          <div className="rounded-3xl bg-slate-50 p-8 shadow-sm">
-            <FaEye className="mb-5 text-4xl text-slate-900" />
+          <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100">
+              <FaEye className="text-xl text-slate-900" />
+            </div>
 
-            <h3 className="mb-4 text-2xl font-bold">
+            <h3 className="mt-5 text-xl font-bold text-slate-950">
               Our Vision
             </h3>
 
-            <p className="leading-8 text-slate-600">
+            <p className="mt-3 leading-7 text-slate-600">
               To become the most trusted destination for discovering premium
               homes while creating meaningful experiences for every client.
             </p>
           </div>
-
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
-
-        <h2 className="mb-14 text-center text-4xl font-bold">
-          Why Choose Us
-        </h2>
-
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-
-          <div className="rounded-3xl bg-white p-8 shadow-sm transition hover:-translate-y-2 hover:shadow-lg">
-            <FaShieldHalved className="mb-5 text-4xl text-slate-900" />
-
-            <h3 className="mb-3 text-xl font-semibold">
-              Verified Listings
-            </h3>
-
-            <p className="text-slate-600">
-              Every property is carefully verified for quality and authenticity.
-            </p>
+      {/* =====================================================
+          WHY CHOOSE US
+      ====================================================== */}
+      <section className="mx-auto max-w-8xl px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="mb-8 text-center">
+          <div className="mb-3 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+            <span className="h-px w-8 bg-slate-400" />
+            Why Choose Us
+            <span className="h-px w-8 bg-slate-400" />
           </div>
 
-          <div className="rounded-3xl bg-white p-8 shadow-sm transition hover:-translate-y-2 hover:shadow-lg">
-            <FaLocationDot className="mb-5 text-4xl text-slate-900" />
-
-            <h3 className="mb-3 text-xl font-semibold">
-              Prime Locations
-            </h3>
-
-            <p className="text-slate-600">
-              Discover homes in the most desirable cities and neighborhoods.
-            </p>
-          </div>
-
-          <div className="rounded-3xl bg-white p-8 shadow-sm transition hover:-translate-y-2 hover:shadow-lg">
-            <FaHandshake className="mb-5 text-4xl text-slate-900" />
-
-            <h3 className="mb-3 text-xl font-semibold">
-              Trusted Service
-            </h3>
-
-            <p className="text-slate-600">
-              Transparency and customer satisfaction are at the heart of what we do.
-            </p>
-          </div>
-
-          <div className="rounded-3xl bg-white p-8 shadow-sm transition hover:-translate-y-2 hover:shadow-lg">
-            <FaGem className="mb-5 text-4xl text-slate-900" />
-
-            <h3 className="mb-3 text-xl font-semibold">
-              Luxury Experience
-            </h3>
-
-            <p className="text-slate-600">
-              Explore premium homes crafted for modern lifestyles.
-            </p>
-          </div>
-
+          <h2 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+            What Sets Us Apart
+          </h2>
         </div>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {values.map(({ icon: Icon, title, description }) => (
+            <div
+              key={title}
+              className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100">
+                <Icon className="text-xl text-slate-900" />
+              </div>
+
+              <h3 className="mt-5 text-lg font-bold text-slate-950">
+                {title}
+              </h3>
+
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {description}
+              </p>
+            </div>
+          ))}
+        </div>
+
       </section>
 
-    {/* Testimonials */}
-    <section className="bg-slate-50 py-20">
-      <div className="mx-auto max-w-7xl px-6">
-
-        {/* Section Header */}
-        <div className="mb-12 text-center">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">
+      {/* =====================================================
+          TESTIMONIALS
+      ====================================================== */}
+      <section className="mx-auto max-w-8xl px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="mb-8 text-center">
+          <div className="mb-3 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+            <span className="h-px w-8 bg-slate-400" />
             Testimonials
-          </p>
+            <span className="h-px w-8 bg-slate-400" />
+          </div>
 
-          <h2 className="text-3xl font-bold text-slate-950 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
             What Our Clients Say
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
-            Hear from homeowners and investors who trusted La Maison to
-            find their perfect property.
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+            Hear from homeowners and investors who trusted La Maison to find
+            their perfect property.
           </p>
         </div>
 
         {/* Loading */}
-        {loadingTestimonials ? (
+        {loadingTestimonials && (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((item) => (
               <div
                 key={item}
-                className="rounded-3xl bg-white p-6 shadow-sm sm:p-7"
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7"
               >
-                {/* Stars */}
                 <div className="mb-6 h-5 w-28 animate-pulse rounded bg-slate-200" />
 
-                {/* Review */}
                 <div className="space-y-3">
                   <div className="h-4 w-full animate-pulse rounded bg-slate-200" />
                   <div className="h-4 w-full animate-pulse rounded bg-slate-200" />
                   <div className="h-4 w-4/5 animate-pulse rounded bg-slate-200" />
                 </div>
 
-                {/* User */}
                 <div className="mt-8 flex items-center gap-4 border-t border-slate-100 pt-6">
                   <div className="h-12 w-12 shrink-0 animate-pulse rounded-full bg-slate-200" />
 
@@ -256,88 +285,110 @@ const About = () => {
               </div>
             ))}
           </div>
-        ) : testimonialError ? (
-          /* Error */
-          <div className="mx-auto max-w-xl rounded-2xl border border-red-200 bg-red-50 p-6 text-center text-red-600">
-            {testimonialError}
-          </div>
-        ) : testimonials.length === 0 ? (
-          /* Empty */
-          <div className="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-white p-8 text-center text-slate-500">
-            No testimonials available yet.
-          </div>
-        ) : (
-          /* Testimonials Grid */
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((testimonial) => (
-              <div
-                key={testimonial._id}
-                className="flex h-full min-w-0 flex-col rounded-3xl bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:p-7"
-              >
-                {/* Stars */}
-                <div className="mb-5 flex gap-1 text-yellow-400">
-                  {[...Array(testimonial.rating)].map((_, index) => (
-                    <FaStar key={index} />
-                  ))}
-                </div>
+        )}
 
-                {/* Review */}
-                <p className="flex-1 break-words text-base leading-7 text-slate-600">
-                  "{testimonial.message}"
-                </p>
-
-                {/* User */}
-                <div className="mt-8 flex min-w-0 items-center gap-4 border-t border-slate-100 pt-6">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="h-12 w-12 shrink-0 rounded-full object-cover"
-                  />
-
-                  <div className="min-w-0">
-                    <h4 className="truncate font-semibold text-slate-900">
-                      {testimonial.name}
-                    </h4>
-
-                    <p className="truncate text-sm text-slate-500">
-                      {testimonial.role}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
+        {/* Error */}
+        {!loadingTestimonials && testimonialError && (
+          <div className="rounded-2xl border border-red-100 bg-red-50 p-8 text-center">
+            <h3 className="text-lg font-semibold text-red-900">
+              Unable to load testimonials
+            </h3>
+            <p className="mt-2 text-sm text-red-600">{testimonialError}</p>
           </div>
         )}
 
-      </div>
-    </section>
-      {/* CTA */}
-      <section className="bg-slate-900 py-20 text-center text-white">
+        {/* Empty */}
+        {!loadingTestimonials &&
+          !testimonialError &&
+          testimonials.length === 0 && (
+            <div className="rounded-3xl border border-slate-200 bg-white px-6 py-14 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
+                <FaStar className="text-slate-500" />
+              </div>
 
-        <div className="mx-auto max-w-4xl px-6">
+              <h3 className="mt-5 text-xl font-bold text-slate-950">
+                No testimonials available yet
+              </h3>
 
-          <FaHouse className="mx-auto mb-6 text-5xl" />
+              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+                Check back soon to hear from clients who found their perfect
+                property with us.
+              </p>
+            </div>
+          )}
 
-          <h2 className="text-4xl font-bold">
-            Ready to Find Your Dream Home?
+        {/* Testimonials Grid */}
+        {!loadingTestimonials &&
+          !testimonialError &&
+          testimonials.length > 0 && (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {testimonials.map((testimonial) => (
+                <div
+                  key={testimonial._id}
+                  className="flex h-full min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60 sm:p-7"
+                >
+                  <div className="mb-5 flex gap-1 text-yellow-400">
+                    {[...Array(testimonial.rating)].map((_, index) => (
+                      <FaStar key={index} />
+                    ))}
+                  </div>
+
+                  <p className="flex-1 break-words text-base leading-7 text-slate-600">
+                    "{testimonial.message}"
+                  </p>
+
+                  <div className="mt-8 flex min-w-0 items-center gap-4 border-t border-slate-100 pt-6">
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="h-12 w-12 shrink-0 rounded-full object-cover"
+                    />
+
+                    <div className="min-w-0">
+                      <h4 className="truncate font-semibold text-slate-900">
+                        {testimonial.name}
+                      </h4>
+
+                      <p className="truncate text-sm text-slate-500">
+                        {testimonial.role}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+      </section>
+
+      {/* =====================================================
+          BOTTOM CTA
+      ====================================================== */}
+      <section className="mx-auto max-w-8xl px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="overflow-hidden rounded-3xl bg-slate-950 px-6 py-12 text-center sm:px-10 lg:px-14">
+          <FaHouse className="mx-auto mb-5 text-4xl text-white" />
+
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+            Your next chapter
+          </p>
+
+          <h2 className="mx-auto mt-3 max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            Ready to find a place you can call home?
           </h2>
 
-          <p className="mt-6 text-lg text-slate-300">
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-slate-400">
             Browse hundreds of carefully selected properties and begin your
             journey toward finding the perfect place to call home.
           </p>
 
           <Link
             to="/properties"
-            className="mt-8 inline-block rounded-lg bg-white px-6 py-3 font-semibold text-slate-900 transition hover:bg-slate-200"
+            className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-slate-950 transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-100"
           >
             Explore Properties
+            <FaArrowRight className="text-xs transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
-
         </div>
-
       </section>
-
     </div>
   );
 };

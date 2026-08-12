@@ -2,7 +2,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import backgroundImage from "../assets/images/backgroundImage.jfif";
 import { Link, useNavigate } from "react-router-dom";
-import { FaGoogle, FaEnvelope, FaLock } from "react-icons/fa";
+import { FaEnvelope, FaLock } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
@@ -18,7 +18,9 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Handle input changes
+  // ==============================
+  // HANDLE INPUT CHANGES
+  // ==============================
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -28,13 +30,14 @@ const Login = () => {
     }));
   };
 
-  // Handle login
+  // ==============================
+  // EMAIL / PASSWORD LOGIN
+  // ==============================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setError("");
 
-    // Basic validation
     if (!formData.email || !formData.password) {
       setError("Please enter your email and password.");
       return;
@@ -65,15 +68,17 @@ const Login = () => {
 
       await login(data, rememberMe);
 
-      // Redirect after successful login
       navigate("/");
     } catch (error) {
-      setError(error.message);
+      setError(error.message || "Login failed.");
     } finally {
       setLoading(false);
     }
   };
 
+  // ==============================
+  // GOOGLE LOGIN
+  // ==============================
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       setError("");
@@ -113,7 +118,9 @@ const Login = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Background */}
+      {/* ==============================
+          BACKGROUND
+      ============================== */}
       <img
         src={backgroundImage}
         alt="Luxury Villa"
@@ -121,60 +128,72 @@ const Login = () => {
       />
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50"></div>
+      <div className="absolute inset-0 bg-black/50" />
 
-      {/* Login Card */}
-      <div className="relative flex min-h-screen items-center justify-center px-4">
-        <div className="w-full max-w-[420px] rounded-3xl border border-white/20 bg-white/70 p-7 shadow-2xl backdrop-blur-xl">
+      {/* ==============================
+          LOGIN CONTENT
+      ============================== */}
+      <div className="relative flex min-h-screen items-center justify-center px-4 py-8">
+        <div className="w-full max-w-[420px] rounded-3xl border border-white/20 bg-white/75 p-7 shadow-2xl backdrop-blur-xl">
 
-          {/* Logo */}
-          <h1 className="text-center text-4xl font-bold text-slate-900">
-            La Maison
-          </h1>
+          {/* Logo / Brand */}
+          <div className="text-center">
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900">
+              La Maison
+            </h1>
 
-          <p className="mt-2 mb-6 text-center text-gray-600">
-            Welcome back! Sign in to continue exploring premium homes.
-          </p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Welcome back! Sign in to continue exploring premium homes.
+            </p>
+          </div>
 
-          {/* Error Message */}
+          {/* ==============================
+              ERROR MESSAGE
+          ============================== */}
           {error && (
-            <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+            <div className="mt-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
               {error}
             </div>
           )}
 
-          {/* Google Button */}
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={() => {
-              setError("Google login failed. Please try again.");
-            }}
-          />
-
-          {/* Divider */}
-          <div className="my-6 flex items-center">
-            <div className="h-px flex-1 bg-gray-300"></div>
-
-            <span className="mx-4 text-sm text-gray-500">
-              OR
-            </span>
-
-            <div className="h-px flex-1 bg-gray-300"></div>
+          {/* ==============================
+              GOOGLE LOGIN
+          ============================== */}
+          <div className="mt-6 flex justify-center">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => {
+                setError("Google login failed. Please try again.");
+              }}
+            />
           </div>
 
-          {/* Login Form */}
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-4"
-          >
+          {/* ==============================
+              DIVIDER
+          ============================== */}
+          <div className="my-6 flex items-center">
+            <div className="h-px flex-1 bg-slate-300" />
+
+            <span className="mx-4 text-xs font-medium uppercase tracking-wider text-slate-500">
+              Or
+            </span>
+
+            <div className="h-px flex-1 bg-slate-300" />
+          </div>
+
+          {/* ==============================
+              LOGIN FORM
+          ============================== */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+
             {/* Email */}
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">
+              <label className="mb-1.5 block text-sm font-medium text-slate-700">
                 Email
               </label>
 
               <div className="relative">
-                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
 
                 <input
                   type="email"
@@ -182,19 +201,20 @@ const Login = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Enter your email"
-                  className="h-11 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-4 shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
+                  autoComplete="email"
+                  className="h-11 w-full rounded-xl border border-slate-300 bg-white/90 pl-11 pr-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
                 />
               </div>
             </div>
 
             {/* Password */}
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">
+              <label className="mb-1.5 block text-sm font-medium text-slate-700">
                 Password
               </label>
 
               <div className="relative">
-                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
 
                 <input
                   type="password"
@@ -202,54 +222,59 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Enter your password"
-                  className="h-11 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-4 shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
+                  autoComplete="current-password"
+                  className="h-11 w-full rounded-xl border border-slate-300 bg-white/90 pl-11 pr-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
                 />
               </div>
             </div>
 
-            {/* Remember & Forgot */}
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-gray-700">
+            {/* Remember Me / Forgot Password */}
+            <div className="flex items-center justify-between gap-4 text-sm">
+
+              <label className="flex cursor-pointer items-center gap-2 text-slate-700">
                 <input
                   type="checkbox"
                   checked={rememberMe}
-                  onChange={(e) =>
-                    setRememberMe(e.target.checked)
-                  }
+                  onChange={(e) => setRememberMe(e.target.checked)}
                   className="h-4 w-4 rounded accent-slate-900"
                 />
 
-                Remember me
+                <span>Remember me</span>
               </label>
 
-              <button
-                type="button"
-                className="font-medium text-slate-900 hover:underline"
+              <Link
+                to="/forgot-password"
+                className="font-medium text-slate-900 transition hover:text-slate-600 hover:underline"
               >
                 Forgot Password?
-              </button>
+              </Link>
             </div>
 
             {/* Login Button */}
             <button
               type="submit"
               disabled={loading}
-              className="h-11 w-full rounded-xl bg-slate-900 font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+              className="h-11 w-full rounded-xl bg-slate-900 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-slate-800 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "Signing In..." : "Login"}
             </button>
           </form>
 
-          {/* Signup */}
-          <p className="mt-6 text-center text-sm text-gray-600">
-            Don't have an account?{" "}
-            <Link
-              to="/signup"
-              className="font-semibold text-slate-900 hover:underline"
-            >
-              Sign Up
-            </Link>
-          </p>
+          {/* ==============================
+              SIGN UP
+          ============================== */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-slate-500">
+              Don't have an account?{" "}
+              <Link
+                to="/signup"
+                className="font-semibold text-slate-900 transition hover:text-slate-600 hover:underline"
+              >
+                Create an account
+              </Link>
+            </p>
+          </div>
+
         </div>
       </div>
     </div>
