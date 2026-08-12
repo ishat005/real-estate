@@ -4,6 +4,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Hero from "../components/properties/Hero";
 import PropertyCard from "../components/properties/PropertyCard";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Properties = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -39,7 +41,7 @@ const Properties = () => {
         setError("");
 
         const response = await fetch(
-          "http://localhost:5000/api/properties"
+          `${API_URL}/api/properties`
         );
 
         const data = await response.json();
