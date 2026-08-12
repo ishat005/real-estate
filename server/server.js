@@ -16,9 +16,28 @@ connectDB();
 // ==============================
 // MIDDLEWARE
 // ==============================
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://lamaisonreal-estate.netlify.app",
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(
+        new Error(`CORS policy: Origin ${origin} is not allowed`)
+      );
+    },
+    credentials: true,
   })
 );
 
