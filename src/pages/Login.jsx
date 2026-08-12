@@ -44,7 +44,7 @@ const Login = () => {
       setLoading(true);
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/login`,
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
         {
           method: "POST",
           headers: {
@@ -80,7 +80,7 @@ const Login = () => {
       setLoading(true);
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/google`,
+        `${import.meta.env.VITE_API_URL}/api/auth/google`,
         {
           method: "POST",
           headers: {
@@ -149,7 +149,6 @@ const Login = () => {
             onError={() => {
               setError("Google login failed. Please try again.");
             }}
-            width="100%"
           />
 
           {/* Divider */}
