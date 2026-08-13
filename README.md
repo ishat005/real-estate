@@ -219,6 +219,8 @@ La Maison follows a client-server architecture where the React frontend communic
                     │       MongoDB        │
                     │       Database       │
                     └──────────────────────┘
+```
+
 ---
 
 # 🧩 Challenges & Solutions
@@ -278,61 +280,184 @@ Make sure you have the following installed:
 
 Google OAuth credentials are required if you want to test Google authentication locally.
 
+## Clone the Repository
+
+```bash
+git clone https://github.com/ishat005/real-estate.git
+cd real-estate
+```
+
+## Install Dependencies
+
+Install the dependencies for both the frontend and backend.
+
+### Backend
+
+```bash
+cd backend
+npm install
+```
+
+### Frontend
+
+Open a new terminal and run:
+
+```bash
+cd frontend
+npm install
+```
+
+## Environment Variables
+
+Create the required `.env` files for the frontend and backend.
+
+The application uses environment variables for API URLs, database configuration, authentication credentials, and other environment-specific settings.
+
+> Do not commit `.env` files or sensitive credentials to GitHub.
+
+## Start the Backend
+
+From the `backend` folder:
+
+```bash
+npm run dev
+```
+
+## Start the Frontend
+
+From the `frontend` folder:
+
+```bash
+npm run dev
+```
+
+The frontend will be available at:
+
+```text
+http://localhost:5173
+```
+
 ---
 
-### 🔮 Future Development
+# 📁 Project Structure
+
+```text
+real-estate/
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   ├── package.json
+│   └── vite.config.js
+│
+├── backend/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── app.js
+│   ├── server.js
+│   └── package.json
+│
+├── screenshots/
+│   ├── homepage.png
+│   ├── properties.png
+│   ├── property-details.png
+│   ├── login.png
+│   ├── signup.png
+│   ├── profile.png
+│   └── favorites.png
+│
+└── README.md
+```
+
+> The structure above represents the main organization of the project. Individual files may vary as the application continues to evolve.
+
+---
+
+# 🌐 Deployment
+
+The application is deployed using separate frontend and backend services.
+
+### Frontend
+
+Deployed using Netlify.
+
+🔗 https://lamaisonreal-estate.netlify.app
+
+### Backend
+
+Deployed using Render.
+
+The frontend communicates with the deployed backend through REST APIs.
+
+Environment variables are configured separately for local development and production.
+
+---
+
+# 🔮 Future Development
 
 La Maison can be expanded with additional features as the platform evolves.
 
 Potential future improvements include:
 
-🗺️ Map-based property search
-🔎 Advanced property filtering and sorting
-⚖️ Property comparison
-💰 Mortgage and payment calculator
-🏢 Expanded admin dashboard
-🏡 Property management functionality
-🔑 Password reset and account recovery
-📧 Additional email notifications
-🔔 User notification system
-♿ Additional accessibility improvements
-⚡ Further frontend performance optimizations
-🖼️ Improved property image management
-👤 Additional user profile functionality
-📱 Further mobile UX improvements
+- 🗺️ Map-based property search
+- 🔎 Advanced property filtering and sorting
+- ⚖️ Property comparison
+- 💰 Mortgage and payment calculator
+- 🏢 Expanded admin dashboard
+- 🏡 Property management functionality
+- 🔑 Password reset and account recovery
+- 📧 Additional email notifications
+- 🔔 User notification system
+- ♿ Additional accessibility improvements
+- ⚡ Further frontend performance optimizations
+- 🖼️ Improved property image management
+- 👤 Additional user profile functionality
+- 📱 Further mobile UX improvements
 
 ---
-### 👩‍💻 Author: Isha Thakur
+
+# 👩‍💻 Author
+
+## Isha Thakur
 
 Full-Stack Developer focused on building responsive and user-friendly web applications using React, Node.js, Express, and MongoDB.
 
-Portfolio
+### Portfolio
 
 https://isha-thakur.netlify.app/
 
-GitHub
+### GitHub
 
 https://github.com/ishat005
 
-La Maison
+### La Maison
 
 https://lamaisonreal-estate.netlify.app
 
 ---
 
-### 📌 Project Status
+# 📌 Project Status
 
 La Maison is an actively developed portfolio project demonstrating:
 
-Full-stack application development
-React frontend development
-Node.js and Express backend development
-REST API integration
-Authentication
-MongoDB database interaction
-Responsive UI development
-Deployment and environment configuration
+- Full-stack application development
+- React frontend development
+- Node.js and Express backend development
+- REST API integration
+- Authentication
+- MongoDB database interaction
+- Responsive UI development
+- Deployment and environment configuration
 
 Future features may be added as the project continues to evolve.
-
----
