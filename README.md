@@ -1,16 +1,48 @@
-# React + Vite
+🏠 La Maison
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack real estate platform built with React, Node.js, Express.js and MongoDB.
 
-Currently, two official plugins are available:
+La Maison allows users to browse properties, search and filter listings, create accounts, authenticate with Google, save favorite properties, and manage their profiles through a responsive modern interface.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+✨ Features
+🏠 Property listings and detailed property pages
+🔎 Property search and filtering
+❤️ Favorite properties
+🔐 User authentication
+🔑 JWT-based authentication
+🔵 Google OAuth authentication
+👤 User profiles
+📱 Responsive design
+⚡ RESTful API
+🗄️ MongoDB database
+🌐 Separate frontend and backend deployments
+🛠️ Tech Stack
 
-## React Compiler
+Frontend
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React
+React Router
+Tailwind CSS
+Vite
+React Icons
 
-## Expanding the ESLint configuration
+Backend
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Node.js
+Express.js
+MongoDB
+Mongoose
+JWT
+Google OAuth
+
+Deployment
+
+Netlify
+Render
+🔗 Links
+
+Live Demo:
+https://lamaisonreal-estate.netlify.app
+
+GitHub:
+https://github.com/ishat005/real-estate
