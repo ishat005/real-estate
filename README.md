@@ -231,15 +231,17 @@ One of the main challenges was connecting the React frontend to a separate Node.
 
 ### CORS Configuration
 
-Because the frontend and backend are deployed separately, cross-origin requests required proper CORS configuration. I configured the Express backend to allow requests from the appropriate frontend environments during development and deployment.
+Because the frontend and backend are deployed separately, cross-origin requests required proper CORS configuration. The Express backend was configured to allow requests from the appropriate frontend environments.
 
 ### Authentication
 
-Implemented JWT-based authentication for email/password login and registration, along with Google authentication. Authentication state is managed through React Context so that user-specific features remain available throughout the application.
+Implemented JWT-based authentication for email/password login and registration, along with Google authentication.
+
+Authentication state is managed through React Context so that user-specific features remain available throughout the application.
 
 ### Protected Routes & User-Specific Features
 
-Implemented protected routes and API authorization for features that require authentication, including user profiles and saved properties. This ensures that users can only access functionality associated with their own accounts.
+Implemented protected routes and API authorization for features that require authentication, including user profiles and saved properties.
 
 ### Favorites System
 
@@ -247,11 +249,13 @@ Built a user-specific favorites system that allows authenticated users to add an
 
 ### Search & Filtering
 
-Implemented property search functionality using location, property type, and budget criteria. Search parameters are passed between the homepage and property listing page to provide a more consistent user experience.
+Implemented property search functionality using location, property type, and budget criteria.
+
+Search parameters are passed between the homepage and property listing page to provide a consistent user experience.
 
 ### Google Authentication
 
-Integrated Google OAuth into the authentication flow and connected the Google login/signup process with the application's existing authentication state.
+Integrated Google OAuth into the authentication flow and connected Google login/signup with the application's existing authentication state.
 
 ### Responsive UI
 
@@ -263,7 +267,7 @@ Handled API failures and loading states in the React application so users receiv
 
 ### Deployment & Environment Configuration
 
-Deployed the frontend and backend as separate applications and configured environment variables so the application can switch between local development and the production API without changing the application code.
+Deployed the frontend and backend as separate services and configured environment variables so the application can switch between local development and the production API.
 
 ---
 
@@ -280,58 +284,76 @@ Make sure you have the following installed:
 
 Google OAuth credentials are required if you want to test Google authentication locally.
 
-## Clone the Repository
+---
+
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/ishat005/real-estate.git
 cd real-estate
 ```
 
-## Install Dependencies
+---
 
-Install the dependencies for both the frontend and backend.
+## 2. Install Dependencies
 
-### Backend
+Install the project dependencies from the root directory:
 
 ```bash
-cd backend
 npm install
 ```
 
-### Frontend
-
-Open a new terminal and run:
+If the backend has its own dependencies inside the `server` directory, install those as well:
 
 ```bash
-cd frontend
+cd server
 npm install
+cd ..
 ```
 
-## Environment Variables
+---
 
-Create the required `.env` files for the frontend and backend.
+## 3. Configure Environment Variables
 
-The application uses environment variables for API URLs, database configuration, authentication credentials, and other environment-specific settings.
+Create the required `.env` files based on the environment variables used by the application.
 
-> Do not commit `.env` files or sensitive credentials to GitHub.
+The application uses environment variables for:
 
-## Start the Backend
+- API configuration
+- MongoDB connection
+- Google authentication
+- Authentication settings
+- Other environment-specific configuration
 
-From the `backend` folder:
+> **Important:** Never commit passwords, API keys, database credentials, or other sensitive information to GitHub.
+
+---
+
+## 4. Start the Backend
+
+Start the Node.js/Express backend using the server configuration in the `server` directory.
+
+For example, if the project uses a development script:
 
 ```bash
+cd server
 npm run dev
 ```
 
-## Start the Frontend
+Keep the backend terminal running.
 
-From the `frontend` folder:
+---
+
+## 5. Start the Frontend
+
+Open a new terminal and return to the project root:
 
 ```bash
+cd real-estate
 npm run dev
 ```
 
-The frontend will be available at:
+The Vite development server will normally be available at:
 
 ```text
 http://localhost:5173
@@ -341,32 +363,12 @@ http://localhost:5173
 
 # 📁 Project Structure
 
+The project uses a single repository containing the React frontend at the root level and the Node.js/Express backend inside the `server` directory.
+
 ```text
 real-estate/
 │
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   │
-│   ├── package.json
-│   └── vite.config.js
-│
-├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── app.js
-│   ├── server.js
-│   └── package.json
+├── public/
 │
 ├── screenshots/
 │   ├── homepage.png
@@ -377,10 +379,28 @@ real-estate/
 │   ├── profile.png
 │   └── favorites.png
 │
-└── README.md
+├── server/
+│   └── ...
+│
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── context/
+│   ├── pages/
+│   ├── services/
+│   ├── App.jsx
+│   └── main.jsx
+│
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package.json
+├── package-lock.json
+├── README.md
+└── vite.config.js
 ```
 
-> The structure above represents the main organization of the project. Individual files may vary as the application continues to evolve.
+> The structure above highlights the main project directories. Individual files inside `src` and `server` may vary as the application evolves.
 
 ---
 
@@ -390,13 +410,14 @@ The application is deployed using separate frontend and backend services.
 
 ### Frontend
 
-Deployed using Netlify.
+The React frontend is deployed using Netlify.
 
-🔗 https://lamaisonreal-estate.netlify.app
+🔗 **Live Application:**  
+https://lamaisonreal-estate.netlify.app
 
 ### Backend
 
-Deployed using Render.
+The Node.js/Express backend is deployed using Render.
 
 The frontend communicates with the deployed backend through REST APIs.
 
@@ -449,15 +470,17 @@ https://lamaisonreal-estate.netlify.app
 
 # 📌 Project Status
 
-La Maison is an actively developed portfolio project demonstrating:
+La Maison is a portfolio project demonstrating full-stack application development, including:
 
-- Full-stack application development
 - React frontend development
 - Node.js and Express backend development
 - REST API integration
-- Authentication
+- User authentication
+- Google OAuth integration
 - MongoDB database interaction
+- Protected user functionality
 - Responsive UI development
+- Frontend/backend integration
 - Deployment and environment configuration
 
-Future features may be added as the project continues to evolve.
+The project may continue to evolve with additional features and improvements.
